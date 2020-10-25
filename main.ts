@@ -9,7 +9,14 @@ function show_text (mesaage: string) {
 }
 let sprite_list: Sprite[] = []
 let mySprite: Sprite = null
-let text_list = ["Érase una vez...", "la historia de una princesa", "encantada originaria de princesalandia", "perdida en un bosque encantado", "secuestrada por un rapero sifilítico", "Fin"]
+let text_list = [
+"Érase una vez...",
+"la historia de los plurales en español",
+"en un mundo donde nadie se equivocandia",
+"los errores acechan a los hablantes nativos",
+"estás preparado para enfrentar a los malhablantes",
+"Ya veremos!"
+]
 effects.starField.startScreenEffect()
 for (let value of text_list) {
     show_text(value)

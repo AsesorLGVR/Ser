@@ -1,20 +1,27 @@
 {
     "name": "Historia inicial",
+    "description": "",
     "dependencies": {
         "device": "*",
         "storyboard": "*",
         "corgio": "*",
         "keyboard": "*"
     },
-    "description": "",
     "files": [
         "main.blocks",
         "main.ts",
         "README.md",
         "custom.ts"
     ],
-    "preferredEditor": "blocksprj",
     "testFiles": [
         "test.ts"
-    ]
+    ],
+    "targetVersions": {
+        "target": "1.2.6",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
 }

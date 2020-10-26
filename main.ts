@@ -5,7 +5,7 @@ function show_text (mesaage: string) {
     mySprite.ay = -20
     mySprite.y = 130
     mySprite.lifespan = 6000
-    pause(1000)
+    pause(2000)
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
@@ -31,16 +31,15 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     otherSprite.destroy()
     sprite.destroy(effects.fire, 1000)
     info.changeScoreBy(1)
-    music.powerUp.play()
+    music.pewPew.play()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.spray, 1000)
     sprite.say("Joder", 1000)
-    music.pewPew.play()
     info.changeLifeBy(-1)
 })
+let vida: Sprite = null
 let pescaito: Sprite = null
-let rabioso: Sprite = null
 let sprite_list: Sprite[] = []
 let projectile: Sprite = null
 let mySprite: Sprite = null
@@ -61,35 +60,37 @@ effects.starField.startScreenEffect()
 for (let value of text_list) {
     show_text(value)
 }
+music.playMelody("F F E B E D G D ", 120)
 huesudo = sprites.create(img`
     ........................
+    .......fff..............
+    ....fffff2f.............
+    ..ffeeeee22ff...........
+    .ffeeeeee222ff..........
+    .feeeefffeeeef..........
+    .fffffeee2222ef.........
+    fffe222fffffe2f.........
+    fffffffffeeefff.....cc..
+    fefe44ebbf44eef...ccdc..
+    .fee4d4bbfddef..ccddcc..
+    ..feee4dddddfeecdddc....
+    ...f2222222eeddcdcc.....
+    ...f444445e44ddccc......
+    ...ffffffffeeee.........
+    ...fff...ff.............
     ........................
     ........................
     ........................
     ........................
-    ..........ffff..........
-    ........ff1111ff........
-    .......fb111111bf.......
-    .......f11111111f.......
-    ......fd11111111df......
-    ....7.fd11111111df......
-    ...7..fd11111111df......
-    ...7..fd11111111df......
-    ...7..fddd1111dddff.....
-    ...77.fbdbfddfbdbfcf....
-    ...777fcdcf11fcdcfbf....
-    ....77fffbdb1bdffcf.....
-    ....fcb1bcffffff........
-    ....f1c1c1ffffff........
-    ....fdfdfdfffff.........
-    .....f.f.f..............
+    ........................
     ........................
     ........................
     ........................
     `, SpriteKind.Player)
-controller.moveSprite(huesudo, 200, 200)
 mySprite.setFlag(SpriteFlag.StayInScreen, true)
-info.setLife(3)
+controller.moveSprite(huesudo, 200, 200)
+info.setLife(5)
+info.startCountdown(60)
 game.onUpdate(function () {
     sprite_list = sprites.allOfKind(SpriteKind.Player)
     for (let value of list) {
@@ -99,26 +100,6 @@ game.onUpdate(function () {
     }
 })
 game.onUpdateInterval(5000, function () {
-    rabioso = sprites.create(img`
-        . . 4 4 4 . . . . 4 4 4 . . . . 
-        . 4 5 5 5 e . . e 5 5 5 4 . . . 
-        4 5 5 5 5 5 e e 5 5 5 5 5 4 . . 
-        4 5 5 4 4 5 5 5 5 4 4 5 5 4 . . 
-        e 5 4 4 5 5 5 5 5 5 4 4 5 e . . 
-        . e e 5 5 5 5 5 5 5 5 e e . . . 
-        . . e 5 f 5 5 5 5 f 5 e . . . . 
-        . . f 5 5 5 4 4 5 5 5 f . . f f 
-        . . f 4 5 5 f f 5 5 6 f . f 5 f 
-        . . . f 6 6 6 6 6 6 4 4 f 5 5 f 
-        . . . f 4 5 5 5 5 5 5 4 4 5 f . 
-        . . . f 5 5 5 5 5 4 5 5 f f . . 
-        . . . f 5 f f f 5 f f 5 f . . . 
-        . . . f f . . f f . . f f . . . 
-        `, SpriteKind.Enemy)
-    rabioso.setVelocity(-100, 50)
-    rabioso.setPosition(180, randint(0, 120))
-})
-game.onUpdateInterval(1000, function () {
     pescaito = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . c c c c c c . . . 
@@ -137,7 +118,120 @@ game.onUpdateInterval(1000, function () {
         . . . . . f f f 5 5 5 5 5 f . . 
         . . . . . . . . f f f f f f . . 
         `, SpriteKind.Enemy)
-    pescaito.setVelocity(-100, 0)
-    pescaito.setPosition(180, randint(0, 120))
-    pescaito.say(":)")
+    pescaito.setVelocity(-20, 0)
+    pescaito.setPosition(185, randint(0, 120))
+    pescaito.say("Yo soy")
+})
+game.onUpdateInterval(5000, function () {
+    vida = sprites.create(img`
+        . . . . . . . . . . . 6 6 6 6 6 
+        . . . . . . . . . 6 6 7 7 7 7 8 
+        . . . . . . 8 8 8 7 7 8 8 6 8 8 
+        . . e e e e c 6 6 8 8 . 8 7 8 . 
+        . e 2 5 4 2 e c 8 . . . 6 7 8 . 
+        e 2 4 2 2 2 2 2 c . . . 6 7 8 . 
+        e 2 2 2 2 2 2 2 c . . . 8 6 8 . 
+        e 2 e e 2 2 2 2 e e e e c 6 8 . 
+        c 2 e e 2 2 2 2 e 2 5 4 2 c 8 . 
+        . c 2 e e e 2 e 2 4 2 2 2 2 c . 
+        . . c 2 2 2 e e 2 2 2 2 2 2 2 e 
+        . . . e c c e c 2 2 2 2 2 2 2 e 
+        . . . . . . . c 2 e e 2 2 e 2 c 
+        . . . . . . . c e e e e e e 2 c 
+        . . . . . . . . c e 2 2 2 2 c . 
+        . . . . . . . . . c c c c c . . 
+        `, SpriteKind.Enemy)
+    vida.setVelocity(-15, 0)
+    vida.setPosition(180, randint(0, 120))
+    vida.say("Ellas son")
+})
+game.onUpdateInterval(5000, function () {
+    vida = sprites.create(img`
+        . . 4 4 4 . . . . 4 4 4 . . . . 
+        . 4 5 5 5 e . . e 5 5 5 4 . . . 
+        4 5 5 5 5 5 e e 5 5 5 5 5 4 . . 
+        4 5 5 4 4 5 5 5 5 4 4 5 5 4 . . 
+        e 5 4 4 5 5 5 5 5 5 4 4 5 e . . 
+        . e e 5 5 5 5 5 5 5 5 e e . . . 
+        . . e 5 f 5 5 5 5 f 5 e . . . . 
+        . . f 5 5 5 4 4 5 5 5 f . . f f 
+        . . f 4 5 5 f f 5 5 6 f . f 5 f 
+        . . . f 6 6 6 6 6 6 4 4 f 5 5 f 
+        . . . f 4 5 5 5 5 5 5 4 4 5 f . 
+        . . . f 5 5 5 5 5 4 5 5 f f . . 
+        . . . f 5 f f f 5 f f 5 f . . . 
+        . . . f f . . f f . . f f . . . 
+        `, SpriteKind.Enemy)
+    vida.setVelocity(-7, 0)
+    vida.setPosition(190, randint(0, 120))
+    vida.say("Tú eres")
+})
+game.onUpdateInterval(5000, function () {
+    vida = sprites.create(img`
+        . . . . . . . . . . b 5 b . . . 
+        . . . . . . . . . b 5 b . . . . 
+        . . . . . . . . . b c . . . . . 
+        . . . . . . b b b b b b . . . . 
+        . . . . . b b 5 5 5 5 5 b . . . 
+        . . . . b b 5 d 1 f 5 5 d f . . 
+        . . . . b 5 5 1 f f 5 d 4 c . . 
+        . . . . b 5 5 d f b d d 4 4 . . 
+        b d d d b b d 5 5 5 4 4 4 4 4 b 
+        b b d 5 5 5 b 5 5 4 4 4 4 4 b . 
+        b d c 5 5 5 5 d 5 5 5 5 5 b . . 
+        c d d c d 5 5 b 5 5 5 5 5 5 b . 
+        c b d d c c b 5 5 5 5 5 5 5 b . 
+        . c d d d d d d 5 5 5 5 5 d b . 
+        . . c b d d d d d 5 5 5 b b . . 
+        . . . c c c c c c c c b b . . . 
+        `, SpriteKind.Enemy)
+    vida.setVelocity(-18, 0)
+    vida.setPosition(180, randint(0, 120))
+    vida.say("Vosotros sois")
+})
+game.onUpdateInterval(5000, function () {
+    vida = sprites.create(img`
+        . . . . . c c b b b . . . . . . 
+        . . . . c b d d d d b . . . . . 
+        . . . . c d d d d d d b b . . . 
+        . . . . c d d d d d d d d b . . 
+        . . . c b b d d d d d d d b . . 
+        . . . c b b d d d d d d d b . . 
+        . c c c c b b b b d d d b b b . 
+        . c d d b c b b b b b b b b d b 
+        c b b d d d b b b b b d d b d b 
+        c c b b d d d d d d d b b b d c 
+        c b c c c b b b b b b b d d c c 
+        c c b b c c c c b d d d b c c b 
+        . c c c c c c c c c c c b b b b 
+        . . c c c c c b b b b b b b c . 
+        . . . . . . c c b b b b c c . . 
+        . . . . . . . . c c c c . . . . 
+        `, SpriteKind.Enemy)
+    vida.setVelocity(-5, 0)
+    vida.setPosition(180, randint(0, 120))
+    vida.say("Ella es")
+})
+game.onUpdateInterval(5000, function () {
+    vida = sprites.create(img`
+        . . . . . . . . . . . 6 6 6 6 6 
+        . . . . . . . . . 6 6 7 7 7 7 8 
+        . . . . . . 8 8 8 7 7 8 8 6 8 8 
+        . . e e e e c 6 6 8 8 . 8 7 8 . 
+        . e 2 5 4 2 e c 8 . . . 6 7 8 . 
+        e 2 4 2 2 2 2 2 c . . . 6 7 8 . 
+        e 2 2 2 2 2 2 2 c . . . 8 6 8 . 
+        e 2 e e 2 2 2 2 e e e e c 6 8 . 
+        c 2 e e 2 2 2 2 e 2 5 4 2 c 8 . 
+        . c 2 e e e 2 e 2 4 2 2 2 2 c . 
+        . . c 2 2 2 e e 2 2 2 2 2 2 2 e 
+        . . . e c c e c 2 2 2 2 2 2 2 e 
+        . . . . . . . c 2 e e 2 2 e 2 c 
+        . . . . . . . c e e e e e e 2 c 
+        . . . . . . . . c e 2 2 2 2 c . 
+        . . . . . . . . . c c c c c . . 
+        `, SpriteKind.Enemy)
+    vida.setVelocity(-20, 0)
+    vida.setPosition(180, randint(0, 120))
+    vida.say("Nosotros somos")
 })

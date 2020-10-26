@@ -46,15 +46,15 @@ let mySprite: Sprite = null
 let huesudo: Sprite = null
 let text_list = [
 "Érase una vez...",
-"los plurales en español",
-"en un mundo ",
-"donde nadie se equivoca ",
-"los errores acechan ",
-"a los hablantes nativos ",
-"¿estás prparado  ",
-"para enfrentar ",
-"a los malhablantes?",
-"Ya veremos!"
+"el verbo ser",
+"convertido en pesadilla",
+"ataca a los extranjeros",
+"hasta agobiarlos",
+"con su irregularidad",
+"¿estás preparado  ",
+"para enfrentarte ",
+"a su conjugación?",
+"Destrúyelos a todos"
 ]
 effects.starField.startScreenEffect()
 for (let value of text_list) {
